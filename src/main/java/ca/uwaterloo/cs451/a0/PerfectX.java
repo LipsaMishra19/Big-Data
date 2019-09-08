@@ -55,7 +55,7 @@ public class PerfectX extends Configured implements Tool {
     // Reuse objects to save overhead of object creation.
     private static final IntWritable ONE = new IntWritable(1);
     private static final Text WORD = new Text();
-
+    private static final String PERFECT = "perfect";
     @Override
     public void map(LongWritable key, Text value, Context context)
         throws IOException, InterruptedException {
@@ -63,7 +63,7 @@ public class PerfectX extends Configured implements Tool {
       for(int i = 1; i < words.size(); i++) {  
         String cword = words.get(i);
         String pword = words.get(i - 1);
-        if(pword.equals("perfect")) {
+        if(pword.equals(PERFECT)) {
           WORD.set(cword);
           context.write(WORD, ONE);
         }
@@ -73,7 +73,7 @@ public class PerfectX extends Configured implements Tool {
 
   public static final class MyMapperIMC extends Mapper<LongWritable, Text, Text, IntWritable> {
     private Map<String, Integer> counts;
-
+    private static final String PERFECT = "perfect";
     @Override
     public void setup(Context context) throws IOException, InterruptedException {
       counts = new HashMap<>();
@@ -82,11 +82,17 @@ public class PerfectX extends Configured implements Tool {
     @Override
     public void map(LongWritable key, Text value, Context context)
         throws IOException, InterruptedException {
-      for (String word : Tokenizer.tokenize(value.toString())) {
-        if (counts.containsKey(word)) {
-          counts.put(word, counts.get(word)+1);
-        } else {
-          counts.put(word, 1);
+      ArrayList<String> words = new ArrayList<>(Tokenizer.tokenize(value.toString()));
+      for(int i = 1; i < words.size(); i++) {  
+        String cword = words.get(i);
+        String pword = words.get(i - 1);
+        
+        if(pword.equals(PERFECT)) {
+          if(counts.containsKey(cword)) {
+            counts.put(cword, counts.get(cword)+1);
+          } else {
+            counts.put(cword, 1);
+          }
         }
       }
     }
