@@ -6,7 +6,8 @@
 
 ### Question 1: In the Shakespeare collection, what is the most frequent x and how many times does it appear?
 
-Answer: Love 4 
+Answer: hadoop fs -cat cs451-bigdatateach-a0-shakespeare/part-r-00000 | sort -k 2 -n -r | head -1 
+Output: Love 4 
 
 #### Using the Datasci Cluster
 
