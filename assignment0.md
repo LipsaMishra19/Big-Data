@@ -12,17 +12,30 @@ Answer: Love 4
 
 ### Question 2: Run word count on the Datasci cluster and make sure you can access the Resource Manager webapp. What is your application id?
 
-Answer :
+Answer : Application ID: application_1566180955559_0065
 
 ### Question 3: For this word count job, how many mappers ran in parallel?
 
-Answer :
+Answer : 14
 
 ### Question 4: From the word count program, how many times does "waterloo" appear in the sample Wikipedia collection?
 
-Answer :
+Answer : hadoop fs -cat wc-jmr-combiner/part* | grep -E '^waterloo(\s)+'
+Output: 3620
 
 ### Question 5: In the sample Wikipedia collection, what are the 10 most frequent x's and how many times does each appear?
 
-Answer :
+Answer : hadoop fs -cat cs451-bigdatateach-a0-wiki/part* | sort -k 2 -n | tail -10
+Output: 
+season	113
+the	116
+strangers	123
+record	133
+world	137
+score	151
+and	176
+day	187
+for	251
+game	369
+
 
