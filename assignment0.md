@@ -15,6 +15,7 @@ Output: Love 4
 ### Question 2: Run word count on the Datasci cluster and make sure you can access the Resource Manager webapp. What is your application id?
 
 Answer : Application ID for Word Count: application_1566180955559_0063
+
          Application ID for PerfectX: application_1566180955559_0065
 
 ### Question 3: For this word count job, how many mappers ran in parallel?
