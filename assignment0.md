@@ -16,7 +16,6 @@ Output: Love 4
 
 Answer : Application ID for Word Count: application_1566180955559_0063
 
-         Application ID for PerfectX: application_1566180955559_0065
 
 ### Question 3: For this word count job, how many mappers ran in parallel?
 
