@@ -45,7 +45,7 @@ import java.util.Map;
 
 import java.util.ArrayList;
 /**
- * Simple word count demo.
+ *(( (Simple word count demo.
  */
 public class PerfectX extends Configured implements Tool {
   private static final Logger LOG = Logger.getLogger(PerfectX.class);
