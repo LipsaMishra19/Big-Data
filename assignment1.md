@@ -52,18 +52,18 @@
 ## Question 7. In the Wikipedia dataset, what are the five words that have the highest PMI with "hockey"? And how many times do these words co-occur? Use -threshold 50
 
 ### Highest PMI with "hockey":
-####(hockey, defenceman)	(2.4177904, 153)
-####(hockey, winger)	(2.3697948, 188)
-####(hockey, sledge)	(2.348635, 93)
-####(hockey, goaltender)	(2.2534416, 199)
-####(hockey, ice)	(2.2082422, 2160)
+#### (hockey, defenceman)	(2.4177904, 153)
+#### (hockey, winger)	(2.3697948, 188)
+#### (hockey, sledge)	(2.348635, 93)
+#### (hockey, goaltender)	(2.2534416, 199)
+#### (hockey, ice)	(2.2082422, 2160)
 
 ## Question 8. Same as above, but with the word "data".
 
 ### Highest PMI with "data":
-####(data, cooling)	(2.0971367, 74)
-####(data, encryption)	(2.0436049, 53)
-####(data, array)	(1.9901568, 50)
-####(data, storage)	(1.9870713, 110)
-####(data, database)	(1.891547, 100)
+#### (data, cooling)	(2.0971367, 74)
+#### (data, encryption)	(2.0436049, 53)
+#### (data, array)	(1.9901568, 50)
+#### (data, storage)	(1.9870713, 110)
+#### (data, database)	(1.891547, 100)
 
