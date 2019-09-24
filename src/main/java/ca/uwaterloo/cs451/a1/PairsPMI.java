@@ -37,7 +37,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.Map;
-
+import java.util.ArrayList;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 
@@ -78,12 +78,11 @@ public class PairsPMI extends Configured implements Tool {
             break;
           }
         }
-        String[] newWords = new String[wordSet.size()];
-        newWords = wordSet.toArray(newWords);
+        List<String> newWords = new ArrayList<String>(wordSet);
 
-        for(int i =0; i< newWords.length; i++)
+        for(int i =0; i< newWords.size(); i++)
         {
-          WORD.set(newWords[i]);
+          WORD.set(newWords.get(i));
           context.write(WORD,ONE);
         }
         
@@ -134,14 +133,15 @@ public class PairsPMI extends Configured implements Tool {
           }
         }
 
-        String[] newWords = new String[wordSet.size()];
-        newWords = wordSet.toArray(newWords);
+        //String[] newWords = new String[wordSet.size()];
+        //newWords = wordSet.toArray(newWords);
+        List<String> newWords = new ArrayList<String>(wordSet);
 
         // Calculating every word Pair in a line except the self pair
-        for (int i = 0; i < newWords.length; i++) {
-          for (int j = 0; j < newWords.length; j++) {
+        for (int i = 0; i < newWords.size(); i++) {
+          for (int j = 0; j < newWords.size(); j++) {
             if (i == j) continue;
-            PAIR.set(newWords[i], newWords[j]);
+            PAIR.set(newWords.get(i), newWords.get(j));
             context.write(PAIR, ONE);
           }
         }
@@ -182,17 +182,25 @@ public class PairsPMI extends Configured implements Tool {
     public void setup(Context context) throws IOException, InterruptedException {
       Configuration conf = context.getConfiguration();
       linesCount = conf.getLong("counter", 0L);
+      
 
-
-      try { 
+      try{
       FileSystem fs = FileSystem.get(conf);
       FileStatus[] status = fs.globStatus(new Path("tmp/part-r-*"));
-     
-     // FileStatus[] status = fs.globStatus(new Path("u9/lmishra/bigdata2019f/tmp"));
-      for (FileStatus file : status) {
+
+      //Path interdata = new Path("tmp/part-r-*");
+
+      //if(!fs.exists(interdata)){
+      //  throw new IOException("Intermediate file is not present/created: " + interdata.toString());
+      //}
+
+      BufferedReader reader = null;
+
+      for (FileStatus file : status) { 
         FSDataInputStream input = fs.open(file.getPath());
-        InputStreamReader input_sr = new InputStreamReader(input, "UTF-8");
-        BufferedReader reader = new BufferedReader(input_sr);
+        InputStreamReader input_sr = new InputStreamReader(input);
+        reader = new BufferedReader(input_sr);
+
         String line = reader.readLine();
         while (line != null) {
           String[] dataTokens = line.split("\\s+");
@@ -212,6 +220,7 @@ public class PairsPMI extends Configured implements Tool {
     }
 
 
+
     @Override
     public void reduce(PairOfStrings pair, Iterable<IntWritable> values, Context context ) 
         throws IOException, InterruptedException{
@@ -223,7 +232,7 @@ public class PairsPMI extends Configured implements Tool {
        
       Configuration conf = context.getConfiguration();
       int threshold = conf.getInt("threshold", 0);
-      
+      //Check the threshold value
       if (sumOfPair >= threshold){
         String leftX = pair.getLeftElement();
         String rightY = pair.getRightElement();

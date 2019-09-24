@@ -34,12 +34,15 @@ import java.util.StringTokenizer;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Set;
 import java.util.Iterator;
 import java.util.Map;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
+
 
 /** Implementation of Pointwise Mutual Information (PMI) - Function of two events X and Y
  *  Class : StripesPMI
@@ -76,12 +79,12 @@ public class StripesPMI extends Configured implements Tool {
             break;
           }
         }
-        String[] newWords = new String[wordSet.size()];
-        newWords = wordSet.toArray(newWords);
 
-        for(int i =0; i< newWords.length; i++)
+        List<String> newWords = new ArrayList<String>(wordSet);
+
+        for(int i =0; i< newWords.size(); i++)
         {
-          WORD.set(newWords[i]);
+          WORD.set(newWords.get(i));
           context.write(WORD,ONE);
         }
         Counter counter = context.getCounter(MyCounter.COUNT_LINES);
@@ -111,6 +114,7 @@ public class StripesPMI extends Configured implements Tool {
   }
 
   public static final class SecondPMIMapper extends Mapper<LongWritable, Text, Text, HMapStIW> {
+    //Objects for reuse
     private static final HMapStIW MAP = new HMapStIW();
     private static final Text WORD = new Text();
 
@@ -129,17 +133,22 @@ public class StripesPMI extends Configured implements Tool {
           break;
         }
       }
-      String[] newWords = new String[wordSet.size()];
-      newWords = wordSet.toArray(newWords);
+      List<String> newWords = new ArrayList<String>(wordSet);
 
-      for (int i = 0; i < newWords.length; i++) {
-       // MAP.clear();
-        for (int j = 0; j <newWords.length; j++) {
+      String leftword, rightword = "";
+
+      for (int i = 0; i < newWords.size(); i++) {
+        leftword = newWords.get(i);
+       
+        for (int j = 0; j <newWords.size(); j++) {
           if (i == j) continue;
-          MAP.increment(newWords[j]);
+          rightword = newWords.get(j);
+          
+          if(!MAP.containsKey(rightword)){
+            MAP.put(rightword,1);
+        }//Each of the right words are stored in the map
         }
-
-        WORD.set(newWords[i]);
+        WORD.set(leftword);
         context.write(WORD, MAP);
         MAP.clear();
       }
@@ -152,15 +161,17 @@ public class StripesPMI extends Configured implements Tool {
     public void reduce(Text key, Iterable<HMapStIW> values, Context context)
         throws IOException, InterruptedException {
       Iterator<HMapStIW> word = values.iterator();
-      HMapStIW map = new HMapStIW();
-
+      HMapStIW MAP = new HMapStIW();
+      //Sum of each element of the map
       while (word.hasNext()) {
-        map.plus(word.next());
+        MAP.plus(word.next());
       }
 
-      context.write(key, map);
+      context.write(key, MAP);
     }
   }
+
+
   // Second Reducer - Calculates the PMI and emits output as (X,{(Y0,(PMI,Count),(Y1,(PMI,Count)....})
   public static final class SecondPMIReducer extends Reducer<Text, HMapStIW, Text, HashMapWritable> {
     private static final Text KEY = new Text();
@@ -171,34 +182,46 @@ public class StripesPMI extends Configured implements Tool {
 
     @Override
     public void setup(Context context) throws IOException, InterruptedException {
+      //Read from intermediate output of first job and count the number of lines
       Configuration conf = context.getConfiguration();
       linesCount = conf.getLong("counter", 0L);
       
+      try{
 
-      try {
       FileSystem fs = FileSystem.get(conf);
-      FileStatus[] status = fs.globStatus(new Path("tmp/part-r-*"));
+      FileStatus[] fstatus = fs.globStatus(new Path("tmp/part-r-*"));
 
-      for (FileStatus file : status) {
+   
+     // Path interdata = new Path("./tmp/part-r-*");
+      
+     // if(!fs.exists(interdata)){
+     // throw new IOException("Intermediate file is not present/created: " + interdata.toString());
+     // }
+
+      BufferedReader reader = null;
+      for (FileStatus file : fstatus) {
         FSDataInputStream input = fs.open(file.getPath());
-        InputStreamReader input_sr = new InputStreamReader(input, "UTF-8");
-        BufferedReader reader = new BufferedReader(input_sr);
+        InputStreamReader input_sr = new InputStreamReader(input);
+        reader = new BufferedReader(input_sr);
+
         String line = reader.readLine();
         while (line != null) {
           String[] dataTokens = line.split("\\s+");
           if (dataTokens.length != 2) {
-            LOG.info("Line does not have 2 tokens: '" + line + "'");
+            LOG.info("Line does not have 2 tokens exactly: '" + line + "'");
           } else {
             wordCount.put(dataTokens[0], Integer.parseInt(dataTokens[1]));
           }
           line = reader.readLine();
         }
         reader.close();
+      } 
+      } catch (Exception e){
+        throw new IOException("Intermediate File Does not EXIST !!!");
       }
-    } catch (Exception e){
-      throw new IOException("Intermediate File Does not EXIST !!!");
     }
-    }
+
+
 
     @Override
     public void reduce(Text key, Iterable<HMapStIW> values, Context context)
@@ -212,11 +235,13 @@ public class StripesPMI extends Configured implements Tool {
 
       Configuration conf = context.getConfiguration();
       int threshold = conf.getInt("threshold", 0);
-
+      
       String leftX = key.toString();
       KEY.set(leftX);
       MAP.clear();
+
       for (String rightY : map.keySet()) {
+        //Check the threshold value
         if (map.get(rightY) >= threshold) {
           int sumOfPairs = map.get(rightY);
           //PMI Calculation
