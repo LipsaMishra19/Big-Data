@@ -30,11 +30,11 @@
 ### Highest PMI:
 #### (maine, anjou)	(3.6331422, 12)
 #### (anjou, maine)	(3.6331422, 12)
-##### The co-occurence pair (X,Y) and (Y,X) must be in the same line as the code calculates all possible pair of words in a line except the self pair. Hence, their PMI and count is same.
+##### The co-occurence pair (X,Y) and (Y,X) must be in the same line as the code calculates all possible pair of words in a line except the self pair. Hence, their PMI and count is same and the pair occuring in the number of lines is the highest and also the PMI.
 ### Lowest PMI:
 #### (thy, you)	(-1.5303968, 11)
 #### (you, thy)	(-1.5303968, 11)
-##### The co-occurence pair (X,Y) and (Y,X) must be in the same line as the code calculates all possible pair of words in a line except the self pair. Hence, their PMI and count is same.
+##### The co-occurence pair (X,Y) and (Y,X) must be in the same line as the code calculates all possible pair of words in a line except the self pair. Hence, their PMI and count is same and the pair occuring in the number of lines is the lowest and also the PMI.
 
 ## Question 6. What are the three words that have the highest PMI with "tears" and "death"? -threshold 10. And what are the PMI values?
 
