@@ -1,7 +1,10 @@
 package ca.uwaterloo.cs451.a2
 
 import io.bespin.scala.util.Tokenizer
-//import org.apache.spark.Partitioner
+//import org.apache.spark.Partitioneri
+
+import scala.collection.mutable
+import scala.collection.mutable
 import org.apache.log4j._
 import org.apache.hadoop.fs._
 import org.apache.spark.SparkContext
@@ -60,14 +63,12 @@ object StripesPMI extends Tokenizer {
     textFile
       .flatMap(line => {
         val tokens = tokenize(line)
-        // var wordPair = scala.collection.mutable.ListBuffer[(String, Map[String, Int])]()
         val word1 = tokens.take(40).distinct
         if (word1.length > 1) {
-          var wordstripes = scala.collection.mutable.ListBuffer[(String, Map[String, Int])]()
-          var i = 0
-          var j = 0
+          var wordstripes = new mutable.ListBuffer[(String, Map[String, Int])]()
+          
           for (i <- 0 to word1.length - 1) {
-            var wordmap = scala.collection.mutable.Map[String, Int]()
+            var wordmap = mutable.Map[String, Int]()
             for (j <- 0 to word1.length - 1) {
               if ((i != j)) {
                 //var pair = List[tokens(i), tokens(j)]
@@ -88,7 +89,7 @@ object StripesPMI extends Tokenizer {
         // .groupByKey()
       })
         .map(pmistripe => {  
-         val x = pmistripe._1
+       
          // var pmi_map = scala.collection.mutable.Map[String,(Double,Double)]()
          // val cnt = pmistripe._2.filter((m) => m._2)
          // if (cnt >= threshold) {
@@ -103,8 +104,9 @@ object StripesPMI extends Tokenizer {
         //val pmiXY = Math.log10((probXY * count.toFloat) / (probX * probY))
        // }}
        // (p._1, (pmi, p._2.toInt))
-        ("" + "(" + pmistripe._1, pmistripe._2.filter((n) => n._2 >= threshold).map { case (k, v) => {
-          k + "=(" + Math.log10((v.toFloat * countlines.toFloat) / (broadcastVar.value(x) * broadcastVar.value(k))) + "," + v + ")" +")" 
+        ("" + "(" + pmistripe._1, pmistripe._2.filter((n) => n._2 >= threshold).map { 
+          case (k, v) => {
+          k + "=(" + Math.log10((v.toFloat * countlines.toFloat) / (broadcastVar.value(pmistripe._1) * broadcastVar.value(k))) + "," + v + ")" +")" 
         }})
       })
         .filter((p) => p._2.size > 0)
