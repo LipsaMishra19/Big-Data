@@ -122,15 +122,7 @@ object TrendingArrivals {
                 }
                 else { List() }
       })
-        //val color = tuple(0)
-        //val taxi_type = if(color == "green")
-        //(List(tuple(8).toDouble, tuple(9).toDouble),1) else (List(tuple(10).toDouble, tuple(11).toDouble),1)) 
-      //Citigroup
-         // .filter(l => ((l._1(0).toDouble > -74.012083 && l._1(0).toDouble < -74.009867) && (l._1(1).toDouble > 40.720053 && l._1(1).toDouble < 40.7217236 )) ||
-           //            ((l._1(0).toDouble > -74.0144185 && l._1(0).toDouble < -74.013777) && (l._1(1).toDouble > 40.7138745 && l._1(1).toDouble < 40.7152275 )))//Goldman
-             //            .map(p => {
-               //            if ((l._1(0).toDouble > -74.012083 && l._1(0).toDouble < -74.009867)  && (l._1(1).toDouble > 40.720053 && l._1(1).toDouble < 40.7217236 ))
-           //("citigroup",1) else ("goldman",1)
+     
        // })
       //.map(tuple => ("all", 1))
       .reduceByKeyAndWindow(
