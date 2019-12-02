@@ -72,7 +72,7 @@
  
  
 Q3:
-For Goldman:
+For Goldman:  
 (goldman,(1,19800000,0))
 (goldman,(1,20400000,1))
 (goldman,(2,21000000,1))
@@ -186,7 +186,8 @@ For Goldman:
 (goldman,(1,85800000,0))
 (goldman,(0,86400000,1))
 
-For Citigroup:
+
+For Citigroup:  
 (citigroup,(1,01200000,0))
 (citigroup,(2,01800000,1))
 (citigroup,(0,02400000,2))
@@ -330,3 +331,4 @@ For Citigroup:
 (citigroup,(1,85200000,2))
 (citigroup,(1,85800000,1))
 (citigroup,(2,86400000,1))
+
