@@ -8,17 +8,17 @@ github:LipsaMishra19
 
 **Test 1** Successful Compiling? mark: 10.0/10
 
-**Test 2** Q1 test 1 (Linux/Parquet) mark: 0.0/1.25
+**Test 2** Q1 test 1 (Linux/Parquet) mark: 1.25/1.25
 
-**Test 3** Q1 test 1 (Linux/Text) mark: 0.0/1.25
+**Test 3** Q1 test 1 (Linux/Text) mark: 1.25/1.25
 
-**Test 4** Q1 test 2 (Linux/Parquet) mark: 0.0/1.25
+**Test 4** Q1 test 2 (Linux/Parquet) mark: 1.25/1.25
 
-**Test 5** Q1 test 2 (Linux/Text) mark: 0.0/1.25
+**Test 5** Q1 test 2 (Linux/Text) mark: 1.25/1.25
 
-**Test 6** Q2 test 1 (Linux/Parquet) mark: 0.0/1.25
+**Test 6** Q2 test 1 (Linux/Parquet) mark: 1.25/1.25
 
-**Test 7** Q2 test 1 (Linux/Text) mark: 0.0/1.25
+**Test 7** Q2 test 1 (Linux/Text) mark: 1.25/1.25
 
 **Test 8** Q2 test 2 (Linux/Parquet) mark: 1.25/1.25
 
@@ -60,17 +60,17 @@ github:LipsaMishra19
 
 **Test 27** Q7 test 2 (Linux/Text) mark: 2.0/2
 
-**Test 28** Q1 test 1 (Datasci/Parquet) mark: 0.0/1.25
+**Test 28** Q1 test 1 (Datasci/Parquet) mark: 1.25/1.25
 
-**Test 29** Q1 test 1 (Datasci/Text) mark: 0.0/1.25
+**Test 29** Q1 test 1 (Datasci/Text) mark: 1.25/1.25
 
-**Test 30** Q1 test 2 (Datasci/Parquet) mark: 0.0/1.25
+**Test 30** Q1 test 2 (Datasci/Parquet) mark: 1.25/1.25
 
-**Test 31** Q1 test 2 (Datasci/Text) mark: 0.0/1.25
+**Test 31** Q1 test 2 (Datasci/Text) mark: 1.25/1.25
 
-**Test 32** Q2 test 1 (Datasci/Parquet) mark: 0.0/1.25
+**Test 32** Q2 test 1 (Datasci/Parquet) mark: 1.25/1.25
 
-**Test 33** Q2 test 1 (Datasci/Text) mark: 0.0/1.25
+**Test 33** Q2 test 1 (Datasci/Text) mark: 1.25/1.25
 
 **Test 34** Q2 test 2 (Datasci/Parquet) mark: 1.25/1.25
 
@@ -116,7 +116,9 @@ github:LipsaMishra19
 
 **Feedback :** Q1 output is blank. Q2 is off by a single line but the delta is quite large. No bonus awarded for date format.
 
-**Final grade**
-mark: 85.0/100.0
+*Revision* Q1 answer was not in the correct format. Q2 answers in the logs are correct.
 
-summary: 20825086,lmishra,LipsaMishra19,85.0/100.0
+**Final grade**
+mark: 100.0/100.0
+
+summary: 20825086,lmishra,LipsaMishra19,100.0/100.0
