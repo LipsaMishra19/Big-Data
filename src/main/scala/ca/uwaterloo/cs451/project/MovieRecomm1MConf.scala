@@ -5,31 +5,18 @@ import org.apache.spark.graphx._
 import org.apache.spark.rdd.RDD
 import breeze.linalg._
 import breeze.numerics._
-//import org.apache.spark.ml.feature.{ StringIndexer, StringIndexerModel}
-//import org.apache.spark.ml.feature.VectorAssembler
-//import org.apache.spark.ml.linalg.DenseVector
-//import org.apache.spark.mllib.linalg
 import org.apache.log4j._
 import org.apache.hadoop.fs._
 import org.apache.spark.SparkContext
 import SparkContext._
 import org.apache.spark.SparkConf
 import org.rogach.scallop._
-//import scala.io.Source
-//import java.nio.charset.CodingErrorAction
-//import scala.io.Codec
 import scala.math.sqrt
-//import java.io.Serializable
 
 class MovieRecomm1MConf(args: Seq[String]) extends ScallopConf(args) {
   mainOptions = Seq(input, output)
   val input = opt[String](descr = "input path", required = true)
   val output = opt[String](descr = "output path", required = true)
-  //val reducers = opt[Int](descr = "number of reducers", required = false, default = Some(1))
-
-  // To run on DataSci Cluster:Added --num-executors and --executor-cores options
- // val numExecutors = opt[Int](descr = "number of executors", required = false, default = Some(1))
- // val executorCores = opt[Int](descr = "Executors cores", required = false, default = Some(1))
   verify()
 }
 
@@ -48,9 +35,6 @@ object MovieRecommendation1M {
     FileSystem.get(sc.hadoopConfiguration).delete(outputDir, true)
 
     //load movielens data
-    //val MOVIELENS_DIR = "/path/to/MovieLens-100k"
-
-    //change the code here and try to calculate the size of each
     val NUM_USERS = 6040
     val NUM_MOVIES = 3952
     val NUM_RATINGS = 1000000
@@ -60,7 +44,6 @@ object MovieRecommendation1M {
       val cols = line.split("::")
       val userId = cols(0).toLong
       val movieId = cols(1).toLong + 50000 // to avoid mixups with userId
-      //val movieId = cols(1)
       val rating = cols(2).toDouble
       (userId, movieId, rating)
       })
@@ -68,36 +51,26 @@ object MovieRecommendation1M {
     val movieId2Title = sc.textFile(args.input() + "/movies.dat")
     .map(line => {
       val cols = line.split("::")
-     // print(cols)
       val movieId = cols(0).toLong + 50000
-     // print(movieId)
-      //val movieId = cols(0)
       val title = cols(1)
-     // print(title)
-      //(movieId, title)
       movieId -> title
       })
-      //val movieNames = movieId2Title.collectAsMap() 
       .collectAsMap
     val movieId2Genre = sc.textFile(args.input() + "/movies.dat")
     .map(line => {
       val cols = line.split("::")
-     // print(cols)
+   
       val movieId = cols(0).toLong + 50000
-     // print(movieId)
-      //val movieId = cols(0)
-     // val genres = cols(2).split("|")
+
       val genres = cols(2).split("\\|")
-     // print(title)
-      //(movieId, title)
+
       movieId -> genres
       })
-      //val movieNames = movieId2Title.collectAsMap() 
+
       .collectAsMap
       val movieId2Title_b = sc.broadcast(movieId2Title)
       val movieId2Genre_b = sc.broadcast(movieId2Genre)
-    //Creating a graph
-    //Define the vertices
+
     val users: RDD[(VertexId, String)] = ratingsRDD.map(l =>  (l._1, "NA"))
 
     val movies: RDD[(VertexId, String)] = ratingsRDD.map(l => (l._2, movieId2Title_b.value(l._2)))
